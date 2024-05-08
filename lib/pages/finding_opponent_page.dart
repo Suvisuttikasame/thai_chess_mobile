@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:thai_chess_mobile/widgets/app_bar.dart';
+import 'package:thai_chess_mobile/widgets/button_primary.dart';
 import 'package:thai_chess_mobile/widgets/chess_board.dart';
 
 class WaitingRoomPage extends StatefulWidget {
   const WaitingRoomPage({super.key});
+  static const route = 'waiting-room';
 
   @override
   State<WaitingRoomPage> createState() => _WaitingRoomPageState();
@@ -13,6 +15,9 @@ class _WaitingRoomPageState extends State<WaitingRoomPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  void _onCancel() {
+    Navigator.pop(context);
+  }
 
   @override
   void initState() {
@@ -42,33 +47,34 @@ class _WaitingRoomPageState extends State<WaitingRoomPage>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.deepPurple.shade800, Colors.deepPurple.shade200],
+            colors: [
+              Theme.of(context).colorScheme.onPrimary,
+              Theme.of(context).colorScheme.primary
+            ],
           ),
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Chess Waiting Room',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 20),
               const ChessBoard(),
               const SizedBox(height: 20),
               FadeTransition(
                 opacity: _animation,
-                child: const Text(
+                child: Text(
                   'Searching for opponent...',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
+              ),
+              const SizedBox(height: 20),
+              ButtonPrimary(
+                onClick: _onCancel,
+                label: 'Cancel',
               ),
             ],
           ),

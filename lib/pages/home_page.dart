@@ -1,10 +1,13 @@
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:thai_chess_mobile/pages/finding_opponent_page.dart';
 import 'package:thai_chess_mobile/widgets/app_bar.dart';
+import 'package:thai_chess_mobile/widgets/button_primary.dart';
 import 'package:thai_chess_mobile/widgets/menu.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  static const String route = 'home';
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,6 +17,10 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _animation;
+
+  void _onClick() {
+    Navigator.pushNamed(context, WaitingRoomPage.route);
+  }
 
   @override
   void initState() {
@@ -45,8 +52,8 @@ class _HomePageState extends State<HomePage>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.deepPurple.shade800,
-              Colors.deepPurple.shade200,
+              Theme.of(context).colorScheme.onPrimary,
+              Theme.of(context).colorScheme.primary,
             ],
           ),
         ),
@@ -66,26 +73,9 @@ class _HomePageState extends State<HomePage>
                 },
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle play button tap
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                child: const Text(
-                  'Play',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
+              ButtonPrimary(
+                onClick: _onClick,
+                label: 'Play',
               ),
             ],
           ),

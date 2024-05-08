@@ -10,7 +10,7 @@ class Menu extends StatelessWidget {
         children: [
           const UserAccountsDrawerHeader(
             currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('assets/avatar.png'),
+              backgroundImage: NetworkImage('https://i.pravatar.cc/50'),
             ),
             accountName: Text('John Doe'),
             accountEmail: Text('john.doe@example.com'),
