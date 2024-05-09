@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:thai_chess_mobile/pages/finding_opponent_page.dart';
 import 'package:thai_chess_mobile/pages/home_page.dart';
 
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
           onSecondary: Colors.deepPurple.shade900,
           secondary: Colors.deepPurple.shade600,
         ),
-        textTheme: GoogleFonts.soraTextTheme().copyWith(
+        textTheme: const TextTheme().copyWith(
             titleLarge: const TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
