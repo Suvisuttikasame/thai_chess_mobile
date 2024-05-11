@@ -2,6 +2,7 @@ import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:thai_chess_mobile/pages/finding_opponent_page.dart';
 import 'package:thai_chess_mobile/widgets/app_bar.dart';
+import 'package:thai_chess_mobile/widgets/body_outline.dart';
 import 'package:thai_chess_mobile/widgets/button_primary.dart';
 import 'package:thai_chess_mobile/widgets/menu.dart';
 
@@ -46,17 +47,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const Menu(),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).colorScheme.onPrimary,
-              Theme.of(context).colorScheme.primary,
-            ],
-          ),
-        ),
+      body: BodyLayout(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
