@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:thai_chess_mobile/providers/socket_method.dart';
+import 'package:thai_chess_mobile/pages/game_page.dart';
+import 'package:thai_chess_mobile/providers/socket_provider.dart';
 import 'package:thai_chess_mobile/socketio/socket_method.dart';
 import 'package:thai_chess_mobile/widgets/app_bar.dart';
+import 'package:thai_chess_mobile/widgets/body_outline.dart';
 import 'package:thai_chess_mobile/widgets/button_primary.dart';
 import 'package:thai_chess_mobile/widgets/chess_board.dart';
+import 'package:thai_chess_mobile/widgets/error.dart';
+import 'package:thai_chess_mobile/widgets/loading.dart';
 
 class WaitingRoomPage extends ConsumerStatefulWidget {
   const WaitingRoomPage({super.key});
@@ -26,10 +30,8 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
   @override
   void initState() {
     super.initState();
-    print('init state');
     socketClient = ref.read(socketClientProvider);
     socketClient.initConnection();
-    print('init connection');
     socketClient.socket.emit('find-opponent', {
       'playerId': DateTime.now().toString(),
     });
@@ -55,58 +57,84 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
     final createRoomEvent = ref.watch(createRoomStreamProvider);
     final joinRoomEvent = ref.watch(joinRoomStreamProvider);
 
-    if (joinRoomEvent.hasValue) {
-      return const Text('joined');
+    if (joinRoomEvent.hasValue && !joinRoomEvent.hasError) {
+      // Navigator.pushNamed(context, GamePage.route);
+      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 2000),
+              pageBuilder: (_, __, ___) => const GamePage(),
+              transitionsBuilder: (_, animation, __, child) {
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: const Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+            ),
+          ));
     }
     return Scaffold(
       appBar: const MyAppBar(),
-      body: createRoomEvent.when(
-        data: (data) {
-          return Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Theme.of(context).colorScheme.onPrimary,
-                  Theme.of(context).colorScheme.primary
-                ],
+      body: joinRoomEvent.hasValue && !joinRoomEvent.hasError
+          ? BodyLayout(
+              child: Center(
+                child: Column(
+                  children: [
+                    Text(
+                      'Match Opponent',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Loading(),
+                  ],
+                ),
               ),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Chess Waiting Room',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 20),
-                  const ChessBoard(),
-                  const SizedBox(height: 20),
-                  FadeTransition(
-                    opacity: _animation,
-                    child: Text(
-                      'Searching for opponent...',
-                      style: Theme.of(context).textTheme.bodyMedium,
+            )
+          : createRoomEvent.when(
+              data: (data) {
+                return BodyLayout(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Waiting Room',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 20),
+                        const ChessBoard(
+                          width: 300,
+                          height: 300,
+                        ),
+                        const SizedBox(height: 20),
+                        FadeTransition(
+                          opacity: _animation,
+                          child: Text(
+                            'Searching for opponent...',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ButtonPrimary(
+                          onClick: _onCancel,
+                          label: 'Cancel',
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  ButtonPrimary(
-                    onClick: _onCancel,
-                    label: 'Cancel',
-                  ),
-                ],
-              ),
+                );
+              },
+              error: (error, _) {
+                return const ErrorCustom(
+                    errorMessage: 'unable to create room!');
+              },
+              loading: () => const Loading(),
             ),
-          );
-        },
-        error: (error, _) {
-          print(error.toString());
-          return const Text('error');
-        },
-        loading: () => const Text('Loading...'),
-      ),
     );
   }
 }

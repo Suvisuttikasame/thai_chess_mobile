@@ -20,12 +20,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chess Pro',
       theme: ThemeData().copyWith(
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: OpenUpwardsPageTransitionsBuilder(),
+          },
+        ),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          onPrimary: Colors.deepPurple.shade800,
-          primary: Colors.deepPurple.shade200,
-          onSecondary: Colors.deepPurple.shade900,
-          secondary: Colors.deepPurple.shade600,
+          seedColor: Colors.indigo,
+          onPrimary: Colors.indigo.shade800,
+          primary: Colors.indigo.shade200,
+          onSecondary: Colors.indigo.shade900,
+          secondary: Colors.indigo.shade600,
         ),
         textTheme: const TextTheme().copyWith(
             titleLarge: const TextStyle(
