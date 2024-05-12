@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:thai_chess_mobile/pages/game_page.dart';
+import 'package:thai_chess_mobile/providers/room_provider.dart';
 import 'package:thai_chess_mobile/providers/socket_provider.dart';
 import 'package:thai_chess_mobile/socketio/socket_method.dart';
 import 'package:thai_chess_mobile/widgets/app_bar.dart';
@@ -58,30 +59,39 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
     final joinRoomEvent = ref.watch(joinRoomStreamProvider);
 
     if (joinRoomEvent.hasValue && !joinRoomEvent.hasError) {
-      // Navigator.pushNamed(context, GamePage.route);
-      WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.push(
-            context,
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 2000),
-              pageBuilder: (_, __, ___) => const GamePage(),
-              transitionsBuilder: (_, animation, __, child) {
-                return SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child,
-                );
-              },
-            ),
-          ));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(roomProvider.notifier)
+            .createRoom(joinRoomEvent.value!['room']);
+        Future.delayed(
+          const Duration(seconds: 1),
+        );
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 2000),
+            pageBuilder: (_, __, ___) => const GamePage(),
+            transitionsBuilder: (_, animation, __, child) {
+              return SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(1.0, 0.0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            },
+          ),
+        );
+      });
     }
+
     return Scaffold(
       appBar: const MyAppBar(),
       body: joinRoomEvent.hasValue && !joinRoomEvent.hasError
           ? BodyLayout(
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Match Opponent',
