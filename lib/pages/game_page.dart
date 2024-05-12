@@ -6,6 +6,7 @@ import 'package:thai_chess_mobile/models/room.dart';
 import 'package:thai_chess_mobile/providers/room_provider.dart';
 import 'package:thai_chess_mobile/widgets/body_outline.dart';
 import 'package:thai_chess_mobile/widgets/button_primary.dart';
+import 'package:thai_chess_mobile/widgets/game_board.dart';
 
 class GamePage extends ConsumerStatefulWidget {
   static String route = 'game';
@@ -18,9 +19,7 @@ class GamePage extends ConsumerStatefulWidget {
 class _GamePageState extends ConsumerState<GamePage> {
   @override
   Widget build(BuildContext context) {
-    final roomState = ref.watch(roomProvider);
     final double height = MediaQuery.of(context).size.height;
-    final board = Room.getBoardVMap(roomState!.currentBoard);
     int _seconds = 0;
 
     return Scaffold(
@@ -95,61 +94,7 @@ class _GamePageState extends ConsumerState<GamePage> {
             SizedBox(
               height: height * 0.05,
             ),
-            SizedBox(
-              width: double.infinity,
-              height: height * 0.6,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 8,
-                ),
-                itemCount: 64,
-                itemBuilder: (BuildContext context, int index) {
-                  bool isWhite = (index + ((index / 8).floor())) % 2 == 0;
-                  return GestureDetector(
-                    onTap: () {
-                      print('tap: $index');
-                    },
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color:
-                                isWhite ? Colors.white : Colors.grey.shade700,
-                            border: Border.all(
-                              color: Colors.black.withOpacity(0.2),
-                              width: 1,
-                            ),
-                            gradient: LinearGradient(
-                              colors: [
-                                isWhite ? Colors.white : Colors.grey.shade700,
-                                isWhite
-                                    ? Colors.white.withOpacity(0.7)
-                                    : Colors.grey.shade600,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                spreadRadius: 1,
-                                blurRadius: 2,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (board[index + 1] != null)
-                          Piece.getWidget(
-                            board[index + 1]['pieceName'],
-                            board[index + 1]['side'],
-                          )
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+            GameBoard(height: height),
             ButtonPrimary(onClick: () {}, label: 'Surrender')
           ],
         ),
