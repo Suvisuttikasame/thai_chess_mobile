@@ -1,20 +1,26 @@
+import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:thai_chess_mobile/models/piece.dart';
+import 'package:thai_chess_mobile/models/room.dart';
+import 'package:thai_chess_mobile/providers/room_provider.dart';
 import 'package:thai_chess_mobile/widgets/body_outline.dart';
 import 'package:thai_chess_mobile/widgets/button_primary.dart';
 
-class GamePage extends StatefulWidget {
+class GamePage extends ConsumerStatefulWidget {
   static String route = 'game';
   const GamePage({super.key});
 
   @override
-  State<GamePage> createState() => _GamePageState();
+  ConsumerState<GamePage> createState() => _GamePageState();
 }
 
-class _GamePageState extends State<GamePage> {
+class _GamePageState extends ConsumerState<GamePage> {
   @override
   Widget build(BuildContext context) {
+    final roomState = ref.watch(roomProvider);
     final double height = MediaQuery.of(context).size.height;
+    final board = Room.getBoardVMap(roomState!.currentBoard);
     int _seconds = 0;
 
     return Scaffold(
@@ -43,7 +49,7 @@ class _GamePageState extends State<GamePage> {
                         color: Colors.black.withOpacity(0.3),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -99,30 +105,45 @@ class _GamePageState extends State<GamePage> {
                 itemCount: 64,
                 itemBuilder: (BuildContext context, int index) {
                   bool isWhite = (index + ((index / 8).floor())) % 2 == 0;
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: isWhite ? Colors.white : Colors.grey.shade700,
-                      border: Border.all(
-                        color: Colors.black.withOpacity(0.2),
-                        width: 1,
-                      ),
-                      gradient: LinearGradient(
-                        colors: [
-                          isWhite ? Colors.white : Colors.grey.shade700,
-                          isWhite
-                              ? Colors.white.withOpacity(0.7)
-                              : Colors.grey.shade600,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
+                  return GestureDetector(
+                    onTap: () {
+                      print('tap: $index');
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color:
+                                isWhite ? Colors.white : Colors.grey.shade700,
+                            border: Border.all(
+                              color: Colors.black.withOpacity(0.2),
+                              width: 1,
+                            ),
+                            gradient: LinearGradient(
+                              colors: [
+                                isWhite ? Colors.white : Colors.grey.shade700,
+                                isWhite
+                                    ? Colors.white.withOpacity(0.7)
+                                    : Colors.grey.shade600,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 2,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
                         ),
+                        if (board[index + 1] != null)
+                          Piece.getWidget(
+                            board[index + 1]['pieceName'],
+                            board[index + 1]['side'],
+                          )
                       ],
                     ),
                   );
