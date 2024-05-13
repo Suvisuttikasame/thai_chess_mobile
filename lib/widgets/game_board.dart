@@ -46,8 +46,8 @@ class _GameBoardState extends ConsumerState<GameBoard> {
       }
 
       //find footPrint
-      final piece = board[index];
-      final Map<int, dynamic> move = {};
+      var piece = board[index];
+      Map<int, dynamic> move = {};
       if (piece['pieceName'] == PieceName.pawn.name) {
         if (piece['side'] == Side.white.name) {
           if (index + 8 <= 63 && index % 8 == 0) {
@@ -109,6 +109,51 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                 board[index - 9]['side'] == Side.white.name) {
               move[index - 9] = Colors.redAccent;
             }
+          }
+        }
+      }
+
+      if (piece['pieceName'] == PieceName.rook.name) {
+        //col strike
+        for (int i = index + 8; i <= 63; i += 8) {
+          if (board[i] != null && board[i]['side'] == piece['side']) {
+            break;
+          } else if (board[i] != null && board[i]['side'] != piece['side']) {
+            move[i] = Colors.redAccent;
+            break;
+          } else {
+            move[i] = Colors.greenAccent;
+          }
+        }
+        for (int i = index - 8; i >= 0; i -= 8) {
+          if (board[i] != null && board[i]['side'] == piece['side']) {
+            break;
+          } else if (board[i] != null && board[i]['side'] != piece['side']) {
+            move[i] = Colors.redAccent;
+            break;
+          } else {
+            move[i] = Colors.greenAccent;
+          }
+        }
+        //row strike
+        for (int i = index - 1; (i + 1) % 8 != 0; i--) {
+          if (board[i] != null && board[i]['side'] == piece['side']) {
+            break;
+          } else if (board[i] != null && board[i]['side'] != piece['side']) {
+            move[i] = Colors.redAccent;
+            break;
+          } else {
+            move[i] = Colors.greenAccent;
+          }
+        }
+        for (int i = index + 1; (i) % 8 != 0; i++) {
+          if (board[i] != null && board[i]['side'] == piece['side']) {
+            break;
+          } else if (board[i] != null && board[i]['side'] != piece['side']) {
+            move[i] = Colors.redAccent;
+            break;
+          } else {
+            move[i] = Colors.greenAccent;
           }
         }
       }
