@@ -593,9 +593,11 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                   ),
                 ),
                 if (board[index] != null)
-                  Piece.getWidget(
-                    board[index]['pieceName'],
-                    board[index]['side'],
+                  Center(
+                    child: Piece.getWidget(
+                      board[index]['pieceName'],
+                      board[index]['side'],
+                    ),
                   )
               ],
             ),
