@@ -257,6 +257,85 @@ class _GameBoardState extends ConsumerState<GameBoard> {
         }
       }
 
+      if (piece['pieceName'] == PieceName.bishop.name) {
+        if (index % 8 == 0) {
+          if (index + 9 <= 63) {
+            board[index + 9] != null &&
+                    board[index + 9]['side'] != piece['side']
+                ? move[index + 9] = Colors.redAccent
+                : board[index + 9] != null &&
+                        board[index + 9]['side'] == piece['side']
+                    ? null
+                    : move[index + 9] = Colors.greenAccent;
+          }
+          if (index - 7 >= 0) {
+            board[index - 7] != null &&
+                    board[index - 7]['side'] != piece['side']
+                ? move[index - 7] = Colors.redAccent
+                : board[index - 7] != null &&
+                        board[index - 7]['side'] == piece['side']
+                    ? null
+                    : move[index - 7] = Colors.greenAccent;
+          }
+        } else if ((index - 7) % 8 == 0) {
+          if (index - 9 >= 0) {
+            board[index - 9] != null &&
+                    board[index - 9]['side'] != piece['side']
+                ? move[index - 9] = Colors.redAccent
+                : board[index - 9] != null &&
+                        board[index - 9]['side'] == piece['side']
+                    ? null
+                    : move[index - 9] = Colors.greenAccent;
+          }
+          if (index + 7 <= 63) {
+            board[index + 7] != null &&
+                    board[index + 7]['side'] != piece['side']
+                ? move[index + 7] = Colors.redAccent
+                : board[index + 7] != null &&
+                        board[index + 7]['side'] == piece['side']
+                    ? null
+                    : move[index + 7] = Colors.greenAccent;
+          }
+        } else {
+          if (index + 9 <= 63) {
+            board[index + 9] != null &&
+                    board[index + 9]['side'] != piece['side']
+                ? move[index + 9] = Colors.redAccent
+                : board[index + 9] != null &&
+                        board[index + 9]['side'] == piece['side']
+                    ? null
+                    : move[index + 9] = Colors.greenAccent;
+          }
+          if (index - 7 >= 0) {
+            board[index - 7] != null &&
+                    board[index - 7]['side'] != piece['side']
+                ? move[index - 7] = Colors.redAccent
+                : board[index - 7] != null &&
+                        board[index - 7]['side'] == piece['side']
+                    ? null
+                    : move[index - 7] = Colors.greenAccent;
+          }
+          if (index - 9 >= 0) {
+            board[index - 9] != null &&
+                    board[index - 9]['side'] != piece['side']
+                ? move[index - 9] = Colors.redAccent
+                : board[index - 9] != null &&
+                        board[index - 9]['side'] == piece['side']
+                    ? null
+                    : move[index - 9] = Colors.greenAccent;
+          }
+          if (index + 7 <= 63) {
+            board[index + 7] != null &&
+                    board[index + 7]['side'] != piece['side']
+                ? move[index + 7] = Colors.redAccent
+                : board[index + 7] != null &&
+                        board[index + 7]['side'] == piece['side']
+                    ? null
+                    : move[index + 7] = Colors.greenAccent;
+          }
+        }
+      }
+
       ref.read(gameProvider.notifier).footPrintMove(move, piece);
     }
 
