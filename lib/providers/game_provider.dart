@@ -10,7 +10,7 @@ class GameNotifier extends StateNotifier<Map<String, dynamic>> {
           'movePiece': {},
           'footPrintMove': {},
           'board': {},
-          'mode': 'reqular',
+          'mode': 'regular',
           'side': Side.white,
         });
 
@@ -32,7 +32,7 @@ class GameNotifier extends StateNotifier<Map<String, dynamic>> {
       ...state,
       'movePiece': {},
       'footPrintMove': {},
-      'mode': 'reqular',
+      'mode': 'regular',
       'board': board
     };
   }
@@ -42,7 +42,7 @@ class GameNotifier extends StateNotifier<Map<String, dynamic>> {
       ...state,
       'movePiece': {},
       'footPrintMove': {},
-      'mode': 'reqular',
+      'mode': 'regular',
     };
   }
 }
