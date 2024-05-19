@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:thai_chess_mobile/pages/game_page.dart';
+import 'package:thai_chess_mobile/providers/player_provider.dart';
 import 'package:thai_chess_mobile/providers/room_provider.dart';
 import 'package:thai_chess_mobile/providers/socket_provider.dart';
 import 'package:thai_chess_mobile/socketio/socket_method.dart';
@@ -34,7 +35,7 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
     socketClient = ref.read(socketClientProvider);
     socketClient.initConnection();
     socketClient.socket.emit('find-opponent', {
-      'playerId': DateTime.now().toString(),
+      'playerId': ref.read(playerProvider)['id'],
     });
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
@@ -63,6 +64,14 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
         ref
             .read(roomProvider.notifier)
             .createRoom(joinRoomEvent.value!['room']);
+        if (joinRoomEvent.value!['room']['player1']['playerId'] ==
+            ref.read(playerProvider)['id']) {
+          ref.read(playerProvider).update('side',
+              (value) => joinRoomEvent.value!['room']['player1']['side']);
+        } else {
+          ref.read(playerProvider).update('side',
+              (value) => joinRoomEvent.value!['room']['player2']['side']);
+        }
         Future.delayed(
           const Duration(seconds: 1),
         );
