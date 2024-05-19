@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:thai_chess_mobile/models/piece.dart';
 import 'package:thai_chess_mobile/models/room.dart';
 import 'package:thai_chess_mobile/providers/game_provider.dart';
+import 'package:thai_chess_mobile/providers/player_provider.dart';
 import 'package:thai_chess_mobile/providers/room_provider.dart';
 
 class GameBoard extends ConsumerStatefulWidget {
@@ -16,6 +17,7 @@ class GameBoard extends ConsumerStatefulWidget {
 class _GameBoardState extends ConsumerState<GameBoard> {
   @override
   Widget build(BuildContext context) {
+    final playerState = ref.watch(playerProvider);
     final roomState = ref.watch(roomProvider);
     final gameState = ref.watch(gameProvider);
     final Map<dynamic, dynamic> board = gameState['board'];
@@ -39,9 +41,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
         return;
       }
       //is valid tap
-      if ((gameState['board'][index] == null ||
-              gameState['board'][index]['side'] != gameState['side']) &&
-          gameState['mode'] == 'regular') {
+      if (gameState['board'][index] == null && gameState['mode'] == 'regular') {
         return;
       }
 
@@ -543,6 +543,335 @@ class _GameBoardState extends ConsumerState<GameBoard> {
         }
       }
 
+      if (piece['pieceName'] == PieceName.king.name) {
+        if (piece['side'] == Side.black.name) {
+          if (index % 8 == 0) {
+            if (index - 7 >= 0) {
+              board[index - 7] != null &&
+                      board[index - 7]['side'] != piece['side']
+                  ? move[index - 7] = Colors.redAccent
+                  : board[index - 7] != null &&
+                          board[index - 7]['side'] == piece['side']
+                      ? null
+                      : move[index - 7] = Colors.greenAccent;
+            }
+            if (index - 8 >= 0) {
+              board[index - 8] != null &&
+                      board[index - 8]['side'] != piece['side']
+                  ? move[index - 8] = Colors.redAccent
+                  : board[index - 8] != null &&
+                          board[index - 8]['side'] == piece['side']
+                      ? null
+                      : move[index - 8] = Colors.greenAccent;
+            }
+            if (index + 1 <= 63) {
+              board[index + 1] != null &&
+                      board[index + 1]['side'] != piece['side']
+                  ? move[index + 1] = Colors.redAccent
+                  : board[index + 1] != null &&
+                          board[index + 1]['side'] == piece['side']
+                      ? null
+                      : move[index + 1] = Colors.greenAccent;
+            }
+            if (index + 8 <= 63) {
+              board[index + 8] != null &&
+                      board[index + 8]['side'] != piece['side']
+                  ? move[index + 8] = Colors.redAccent
+                  : board[index + 8] != null &&
+                          board[index + 8]['side'] == piece['side']
+                      ? null
+                      : move[index + 8] = Colors.greenAccent;
+            }
+            if (index + 9 <= 63) {
+              board[index + 9] != null &&
+                      board[index + 9]['side'] != piece['side']
+                  ? move[index + 9] = Colors.redAccent
+                  : board[index + 9] != null &&
+                          board[index + 9]['side'] == piece['side']
+                      ? null
+                      : move[index + 9] = Colors.greenAccent;
+            }
+          } else if ((index - 7) % 8 == 0) {
+            if (index - 8 >= 0) {
+              board[index - 8] != null &&
+                      board[index - 8]['side'] != piece['side']
+                  ? move[index - 8] = Colors.redAccent
+                  : board[index - 8] != null &&
+                          board[index - 8]['side'] == piece['side']
+                      ? null
+                      : move[index - 8] = Colors.greenAccent;
+            }
+            if (index - 9 >= 0) {
+              board[index - 9] != null &&
+                      board[index - 9]['side'] != piece['side']
+                  ? move[index - 9] = Colors.redAccent
+                  : board[index - 9] != null &&
+                          board[index - 9]['side'] == piece['side']
+                      ? null
+                      : move[index - 9] = Colors.greenAccent;
+            }
+            if (index - 1 >= 0) {
+              board[index - 1] != null &&
+                      board[index - 1]['side'] != piece['side']
+                  ? move[index - 1] = Colors.redAccent
+                  : board[index - 1] != null &&
+                          board[index - 1]['side'] == piece['side']
+                      ? null
+                      : move[index - 1] = Colors.greenAccent;
+            }
+            if (index + 7 <= 63) {
+              board[index + 7] != null &&
+                      board[index + 7]['side'] != piece['side']
+                  ? move[index + 7] = Colors.redAccent
+                  : board[index + 7] != null &&
+                          board[index + 7]['side'] == piece['side']
+                      ? null
+                      : move[index + 7] = Colors.greenAccent;
+            }
+            if (index + 8 <= 63) {
+              board[index + 8] != null &&
+                      board[index + 8]['side'] != piece['side']
+                  ? move[index + 8] = Colors.redAccent
+                  : board[index + 8] != null &&
+                          board[index + 8]['side'] == piece['side']
+                      ? null
+                      : move[index + 8] = Colors.greenAccent;
+            }
+          } else {
+            if (index - 7 >= 0) {
+              board[index - 7] != null &&
+                      board[index - 7]['side'] != piece['side']
+                  ? move[index - 7] = Colors.redAccent
+                  : board[index - 7] != null &&
+                          board[index - 7]['side'] == piece['side']
+                      ? null
+                      : move[index - 7] = Colors.greenAccent;
+            }
+            if (index - 8 >= 0) {
+              board[index - 8] != null &&
+                      board[index - 8]['side'] != piece['side']
+                  ? move[index - 8] = Colors.redAccent
+                  : board[index - 8] != null &&
+                          board[index - 8]['side'] == piece['side']
+                      ? null
+                      : move[index - 8] = Colors.greenAccent;
+            }
+            if (index - 9 >= 0) {
+              board[index - 9] != null &&
+                      board[index - 9]['side'] != piece['side']
+                  ? move[index - 9] = Colors.redAccent
+                  : board[index - 9] != null &&
+                          board[index - 9]['side'] == piece['side']
+                      ? null
+                      : move[index - 9] = Colors.greenAccent;
+            }
+            if (index - 1 >= 0) {
+              board[index - 1] != null &&
+                      board[index - 1]['side'] != piece['side']
+                  ? move[index - 1] = Colors.redAccent
+                  : board[index - 1] != null &&
+                          board[index - 1]['side'] == piece['side']
+                      ? null
+                      : move[index - 1] = Colors.greenAccent;
+            }
+            if (index + 1 >= 0) {
+              board[index + 1] != null &&
+                      board[index + 1]['side'] != piece['side']
+                  ? move[index + 1] = Colors.redAccent
+                  : board[index + 1] != null &&
+                          board[index + 1]['side'] == piece['side']
+                      ? null
+                      : move[index + 1] = Colors.greenAccent;
+            }
+            if (index + 9 <= 63) {
+              board[index + 9] != null &&
+                      board[index + 9]['side'] != piece['side']
+                  ? move[index + 9] = Colors.redAccent
+                  : board[index + 9] != null &&
+                          board[index + 9]['side'] == piece['side']
+                      ? null
+                      : move[index + 9] = Colors.greenAccent;
+            }
+            if (index + 8 <= 63) {
+              board[index + 8] != null &&
+                      board[index + 8]['side'] != piece['side']
+                  ? move[index + 8] = Colors.redAccent
+                  : board[index + 8] != null &&
+                          board[index + 8]['side'] == piece['side']
+                      ? null
+                      : move[index + 8] = Colors.greenAccent;
+            }
+            if (index + 7 <= 63) {
+              board[index + 7] != null &&
+                      board[index + 7]['side'] != piece['side']
+                  ? move[index + 7] = Colors.redAccent
+                  : board[index + 7] != null &&
+                          board[index + 7]['side'] == piece['side']
+                      ? null
+                      : move[index + 7] = Colors.greenAccent;
+            }
+          }
+        }
+        if (piece['side'] == Side.white.name) {
+          if (index % 8 == 0) {
+            board[index + 8] != null &&
+                    board[index + 8]['side'] != piece['side']
+                ? move[index + 8] = Colors.redAccent
+                : board[index + 8] != null &&
+                        board[index + 8]['side'] == piece['side']
+                    ? null
+                    : move[index + 8] = Colors.greenAccent;
+            if (index + 9 <= 63) {
+              board[index + 9] != null &&
+                      board[index + 9]['side'] != piece['side']
+                  ? move[index + 9] = Colors.redAccent
+                  : board[index + 9] != null &&
+                          board[index + 9]['side'] == piece['side']
+                      ? null
+                      : move[index + 9] = Colors.greenAccent;
+            }
+            if (index + 1 <= 63) {
+              board[index + 1] != null &&
+                      board[index + 1]['side'] != piece['side']
+                  ? move[index + 1] = Colors.redAccent
+                  : board[index + 1] != null &&
+                          board[index + 1]['side'] == piece['side']
+                      ? null
+                      : move[index + 1] = Colors.greenAccent;
+            }
+            if (index - 7 >= 0) {
+              board[index - 7] != null &&
+                      board[index - 7]['side'] != piece['side']
+                  ? move[index - 7] = Colors.redAccent
+                  : board[index - 7] != null &&
+                          board[index - 7]['side'] == piece['side']
+                      ? null
+                      : move[index - 7] = Colors.greenAccent;
+            }
+            if (index - 8 >= 0) {
+              board[index - 8] != null &&
+                      board[index - 8]['side'] != piece['side']
+                  ? move[index - 8] = Colors.redAccent
+                  : board[index - 8] != null &&
+                          board[index - 8]['side'] == piece['side']
+                      ? null
+                      : move[index - 8] = Colors.greenAccent;
+            }
+          } else if ((index - 7) % 8 == 0) {
+            if (index + 7 <= 63) {
+              board[index + 7] != null &&
+                      board[index + 7]['side'] != piece['side']
+                  ? move[index + 7] = Colors.redAccent
+                  : board[index + 7] != null &&
+                          board[index + 7]['side'] == piece['side']
+                      ? null
+                      : move[index + 7] = Colors.greenAccent;
+            }
+            board[index + 8] != null &&
+                    board[index + 8]['side'] != piece['side']
+                ? move[index + 8] = Colors.redAccent
+                : board[index + 8] != null &&
+                        board[index + 8]['side'] == piece['side']
+                    ? null
+                    : move[index + 8] = Colors.greenAccent;
+            board[index - 1] != null &&
+                    board[index - 1]['side'] != piece['side']
+                ? move[index - 1] = Colors.redAccent
+                : board[index - 1] != null &&
+                        board[index - 1]['side'] == piece['side']
+                    ? null
+                    : move[index - 1] = Colors.greenAccent;
+            board[index - 8] != null &&
+                    board[index - 8]['side'] != piece['side']
+                ? move[index - 8] = Colors.redAccent
+                : board[index - 8] != null &&
+                        board[index - 8]['side'] == piece['side']
+                    ? null
+                    : move[index - 8] = Colors.greenAccent;
+            board[index - 9] != null &&
+                    board[index - 9]['side'] != piece['side']
+                ? move[index - 9] = Colors.redAccent
+                : board[index - 9] != null &&
+                        board[index - 9]['side'] == piece['side']
+                    ? null
+                    : move[index - 9] = Colors.greenAccent;
+          } else {
+            if (index + 7 <= 63) {
+              board[index + 7] != null &&
+                      board[index + 7]['side'] != piece['side']
+                  ? move[index + 7] = Colors.redAccent
+                  : board[index + 7] != null &&
+                          board[index + 7]['side'] == piece['side']
+                      ? null
+                      : move[index + 7] = Colors.greenAccent;
+            }
+            if (index + 8 <= 63) {
+              board[index + 8] != null &&
+                      board[index + 8]['side'] != piece['side']
+                  ? move[index + 8] = Colors.redAccent
+                  : board[index + 8] != null &&
+                          board[index + 8]['side'] == piece['side']
+                      ? null
+                      : move[index + 8] = Colors.greenAccent;
+            }
+            if (index + 9 <= 63) {
+              board[index + 9] != null &&
+                      board[index + 9]['side'] != piece['side']
+                  ? move[index + 9] = Colors.redAccent
+                  : board[index + 9] != null &&
+                          board[index + 9]['side'] == piece['side']
+                      ? null
+                      : move[index + 9] = Colors.greenAccent;
+            }
+            if (index + 1 <= 63) {
+              board[index + 1] != null &&
+                      board[index + 1]['side'] != piece['side']
+                  ? move[index + 1] = Colors.redAccent
+                  : board[index + 1] != null &&
+                          board[index + 1]['side'] == piece['side']
+                      ? null
+                      : move[index + 1] = Colors.greenAccent;
+            }
+            if (index - 1 <= 63) {
+              board[index - 1] != null &&
+                      board[index - 1]['side'] != piece['side']
+                  ? move[index - 1] = Colors.redAccent
+                  : board[index - 1] != null &&
+                          board[index - 1]['side'] == piece['side']
+                      ? null
+                      : move[index - 1] = Colors.greenAccent;
+            }
+            if (index - 9 >= 0) {
+              board[index - 9] != null &&
+                      board[index - 9]['side'] != piece['side']
+                  ? move[index - 9] = Colors.redAccent
+                  : board[index - 9] != null &&
+                          board[index - 9]['side'] == piece['side']
+                      ? null
+                      : move[index - 9] = Colors.greenAccent;
+            }
+            if (index - 8 >= 0) {
+              board[index - 8] != null &&
+                      board[index - 8]['side'] != piece['side']
+                  ? move[index - 8] = Colors.redAccent
+                  : board[index - 8] != null &&
+                          board[index - 8]['side'] == piece['side']
+                      ? null
+                      : move[index - 8] = Colors.greenAccent;
+            }
+            if (index - 7 >= 0) {
+              board[index - 7] != null &&
+                      board[index - 7]['side'] != piece['side']
+                  ? move[index - 7] = Colors.redAccent
+                  : board[index - 7] != null &&
+                          board[index - 7]['side'] == piece['side']
+                      ? null
+                      : move[index - 7] = Colors.greenAccent;
+            }
+          }
+        }
+      }
+
       ref.read(gameProvider.notifier).footPrintMove(move, piece);
     }
 
@@ -558,30 +887,48 @@ class _GameBoardState extends ConsumerState<GameBoard> {
           bool isWhite = (index + ((index / 8).floor())) % 2 == 0;
           return GestureDetector(
             onTap: () {
-              tapHandler(index);
+              playerState['side'] == Side.white.name
+                  ? tapHandler(63 - index)
+                  : tapHandler(index);
             },
             child: Stack(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: footPrintMove[index] ??
-                        (isWhite ? Colors.white : Colors.grey.shade700),
+                    color: playerState['side'] == Side.white.name
+                        ? footPrintMove[63 - index] ??
+                            (isWhite ? Colors.white : Colors.grey.shade700)
+                        : footPrintMove[index] ??
+                            (isWhite ? Colors.white : Colors.grey.shade700),
                     border: Border.all(
                       color: Colors.black.withOpacity(0.2),
                       width: 1,
                     ),
-                    gradient: footPrintMove[index] == null
-                        ? LinearGradient(
-                            colors: [
-                              isWhite ? Colors.white : Colors.grey.shade700,
-                              isWhite
-                                  ? Colors.white.withOpacity(0.7)
-                                  : Colors.grey.shade600,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          )
-                        : null,
+                    gradient: playerState['side'] == Side.white.name
+                        ? footPrintMove[63 - index] == null
+                            ? LinearGradient(
+                                colors: [
+                                  isWhite ? Colors.white : Colors.grey.shade700,
+                                  isWhite
+                                      ? Colors.white.withOpacity(0.7)
+                                      : Colors.grey.shade600,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : null
+                        : footPrintMove[index] == null
+                            ? LinearGradient(
+                                colors: [
+                                  isWhite ? Colors.white : Colors.grey.shade700,
+                                  isWhite
+                                      ? Colors.white.withOpacity(0.7)
+                                      : Colors.grey.shade600,
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              )
+                            : null,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.1),
@@ -592,13 +939,22 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                     ],
                   ),
                 ),
-                if (board[index] != null)
+                if (playerState['side'] == Side.white.name &&
+                    board[63 - index] != null)
+                  Center(
+                    child: Piece.getWidget(
+                      board[63 - index]['pieceName'],
+                      board[63 - index]['side'],
+                    ),
+                  )
+                else if (playerState['side'] == Side.black.name &&
+                    board[index] != null)
                   Center(
                     child: Piece.getWidget(
                       board[index]['pieceName'],
                       board[index]['side'],
                     ),
-                  )
+                  ),
               ],
             ),
           );
