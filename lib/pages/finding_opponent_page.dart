@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:thai_chess_mobile/models/piece.dart';
+import 'package:thai_chess_mobile/models/room.dart';
 import 'package:thai_chess_mobile/pages/game_page.dart';
+import 'package:thai_chess_mobile/providers/game_provider.dart';
 import 'package:thai_chess_mobile/providers/player_provider.dart';
 import 'package:thai_chess_mobile/providers/room_provider.dart';
 import 'package:thai_chess_mobile/providers/socket_provider.dart';
@@ -64,13 +67,21 @@ class _WaitingRoomPageState extends ConsumerState<WaitingRoomPage>
         ref
             .read(roomProvider.notifier)
             .createRoom(joinRoomEvent.value!['room']);
+        final board =
+            Room.getBoardVMap(joinRoomEvent.value!['room']['currentBoard']);
         if (joinRoomEvent.value!['room']['player1']['playerId'] ==
             ref.read(playerProvider)['id']) {
-          ref.read(playerProvider).update('side',
-              (value) => joinRoomEvent.value!['room']['player1']['side']);
+          ref.read(gameProvider.notifier).initState(
+              board,
+              Side.values.firstWhere((element) =>
+                  element.toString() ==
+                  'Side.${joinRoomEvent.value!['room']['player1']['side']}'));
         } else {
-          ref.read(playerProvider).update('side',
-              (value) => joinRoomEvent.value!['room']['player2']['side']);
+          ref.read(gameProvider.notifier).initState(
+              board,
+              Side.values.firstWhere((element) =>
+                  element.toString() ==
+                  'Side.${joinRoomEvent.value!['room']['player2']['side']}'));
         }
         Future.delayed(
           const Duration(seconds: 1),

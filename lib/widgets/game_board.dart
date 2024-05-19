@@ -17,7 +17,6 @@ class GameBoard extends ConsumerStatefulWidget {
 class _GameBoardState extends ConsumerState<GameBoard> {
   @override
   Widget build(BuildContext context) {
-    final playerState = ref.watch(playerProvider);
     final roomState = ref.watch(roomProvider);
     final gameState = ref.watch(gameProvider);
     final Map<dynamic, dynamic> board = gameState['board'];
@@ -887,7 +886,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
           bool isWhite = (index + ((index / 8).floor())) % 2 == 0;
           return GestureDetector(
             onTap: () {
-              playerState['side'] == Side.white.name
+              gameState['side'] == Side.white
                   ? tapHandler(63 - index)
                   : tapHandler(index);
             },
@@ -895,7 +894,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: playerState['side'] == Side.white.name
+                    color: gameState['side'] == Side.white
                         ? footPrintMove[63 - index] ??
                             (isWhite ? Colors.white : Colors.grey.shade700)
                         : footPrintMove[index] ??
@@ -904,7 +903,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                       color: Colors.black.withOpacity(0.2),
                       width: 1,
                     ),
-                    gradient: playerState['side'] == Side.white.name
+                    gradient: gameState['side'] == Side.white
                         ? footPrintMove[63 - index] == null
                             ? LinearGradient(
                                 colors: [
@@ -939,7 +938,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                     ],
                   ),
                 ),
-                if (playerState['side'] == Side.white.name &&
+                if (gameState['side'] == Side.white &&
                     board[63 - index] != null)
                   Center(
                     child: Piece.getWidget(
@@ -947,7 +946,7 @@ class _GameBoardState extends ConsumerState<GameBoard> {
                       board[63 - index]['side'],
                     ),
                   )
-                else if (playerState['side'] == Side.black.name &&
+                else if (gameState['side'] == Side.black &&
                     board[index] != null)
                   Center(
                     child: Piece.getWidget(

@@ -23,7 +23,5 @@ class RoomNotifier extends StateNotifier<Room?> {
       turn: turn,
       currentBoard: data['currentBoard'],
     );
-    final board = Room.getBoardVMap(state!.currentBoard);
-    ref.read(gameProvider.notifier).initState(board, Side.black);
   }
 }

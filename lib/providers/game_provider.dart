@@ -11,7 +11,7 @@ class GameNotifier extends StateNotifier<Map<String, dynamic>> {
           'footPrintMove': {},
           'board': {},
           'mode': 'regular',
-          'side': Side.white,
+          'side': null,
         });
 
   void initState(Map<int, dynamic> board, Side side) {
